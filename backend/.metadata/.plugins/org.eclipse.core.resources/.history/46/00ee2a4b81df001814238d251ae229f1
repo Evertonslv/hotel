@@ -1,0 +1,236 @@
+package com.hotel.model.dao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.hotel.model.Checkin;
+import com.hotel.model.Hospede;
+import com.hotel.model.config.Conexao;
+
+public class CheckinDAO {
+
+	public boolean inserir(Checkin checkin)
+	{
+		String sql = "INSERT INTO checkin(datent_che,datsai_che,veicul_che,codhos_che,valor_che) VALUES(?,?,?,?)";
+		Boolean retorno = false;
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+
+		try {
+			pst.setTimestamp(1, checkin.getDataEntrada());
+			pst.setTimestamp(2, checkin.getDataSaida());
+			pst.setInt(3, (checkin.isVeiculo() ? 1 : 0));
+			
+			if(checkin.getCodigoHospede() == 0) {
+				if(checkin.getHospede() != null) {
+					HospedeDAO dao = new HospedeDAO();
+					pst.setInt(4, dao.getCodigoHospede(checkin.getHospede()));
+				}
+			} else {
+				pst.setInt(4, checkin.getCodigoHospede());			
+			}
+			
+			pst.setDouble(5, checkin.getValor());
+
+			if(pst.executeUpdate()>0)
+			{
+				retorno = true;
+			}
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+			retorno = false;
+		}
+
+		return retorno;
+	}
+
+	public boolean atualizar(Checkin checkin)
+	{
+		String sql = "UPDATE checkin set datent_che=?,datsai_che=?,veicul_che=?,valor_che=? where codigo_che=?";
+		Boolean retorno = false;
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+
+		try {
+
+			pst.setTimestamp(1, checkin.getDataEntrada());
+			pst.setTimestamp(2, checkin.getDataSaida());
+			pst.setInt(3, (checkin.isVeiculo() ? 1 : 0));
+			pst.setInt(4, checkin.getCodigo());
+			pst.setDouble(5, checkin.getValor());
+
+			if(pst.executeUpdate()>0)
+			{
+				retorno = true;
+			}
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+			retorno = false;
+		}
+
+		return retorno;
+
+	}
+	public boolean remover(int codigo)
+	{
+		String sql = "DELETE FROM checkin where codigo_che=?";
+		Boolean retorno = false;
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+
+		try {
+			pst.setInt(1, codigo);
+
+			if(pst.executeUpdate()>0)
+			{
+				retorno = true;
+			}            
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+			retorno = false;
+		}
+
+		return retorno;
+	}
+
+	public Checkin buscar(int codigo)
+	{
+		String sql = "SELECT * FROM checkin where codigo_che=?";
+		Checkin checkin = null;
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {
+
+			pst.setInt(1, codigo);
+			ResultSet res = pst.executeQuery();
+
+			if(res.next())
+			{
+				checkin = new Checkin();
+				checkin.setCodigo(res.getInt("codigo_che"));
+				checkin.setVeiculo(res.getString("veicul_che").equals("1"));	
+				checkin.setDataEntrada(res.getTimestamp("datent_che"));
+				checkin.setDataSaida(res.getTimestamp("datsai_che"));
+				checkin.setCodigoHospede(res.getTimestamp("codhos_che"));
+				checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
+				checkin.setValor();
+			}
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+
+		return checkin;
+	}
+	
+	public double buscaValorUltimoCheckin(Hospede hospede)
+	{
+		String sql = "SELECT valor_che FROM checkin where codigo_che = (select max(codigo_che) from checkin where datsai_che is not null and codhos_che?);";
+		double valorRetorno = 0;
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {
+
+			pst.setInt(1, hospede.getCodigo());
+			ResultSet res = pst.executeQuery();
+
+			if(res.next())
+			{
+				valorRetorno = res.getDouble("valor_che");
+			}
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+
+		return valorRetorno;
+	}
+
+	public List<Checkin> listarTodos()
+	{
+		String sql = "select * from checkin;";
+		List<Checkin> listaRetorno = new ArrayList<Checkin>();
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {           
+
+			ResultSet res = pst.executeQuery();
+			setValuesCheckin(res);
+			
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return listaRetorno;
+
+	}
+
+	public List<Checkin> listarTodosComCheckin()
+	{
+		String sql = "select * from checkin where datsai_che is not null;";
+		List<Checkin> listaRetorno = new ArrayList<Checkin>();
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {           
+
+			ResultSet res = pst.executeQuery();
+			setValuesCheckin(res);
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(HospedeDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+
+		return listaRetorno;
+
+	}
+
+	public List<Checkin> listarTodosSemCheckin()
+	{
+		String sql = "select * from checkin where datsai_che is null;";
+		List<Checkin> listaRetorno = new ArrayList<Checkin>();
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {           
+
+			ResultSet res = pst.executeQuery();
+			listaRetorno = setValuesCheckin(res);
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(HospedeDAO.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return listaRetorno;
+
+	}
+
+	private List<Checkin> setValuesCheckin(ResultSet res) throws SQLException {
+		List<Checkin> listaRetorno = new ArrayList<Checkin>();
+
+		while(res.next())
+		{
+			Checkin checkin = new Checkin();
+			checkin.setCodigo(Integer.parseInt(res.getString("codigo_che")));
+			checkin.setVeiculo(res.getString("veicul_che").equals("1"));
+			checkin.setDataEntrada(res.getTimestamp("datent_che"));
+			checkin.setDataSaida(res.getTimestamp("datsai_che"));
+			checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
+			checkin.setValor();
+
+			listaRetorno.add(checkin);
+		}
+
+		return listaRetorno;
+	}
+	
+
+}

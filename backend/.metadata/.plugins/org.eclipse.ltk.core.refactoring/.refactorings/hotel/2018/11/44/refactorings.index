@@ -25,3 +25,4 @@
 1541212425137	Rename local variable 'retorno'
 1541215024352	Rename method 'setUltimoValor'
 1541215080089	Rename method 'buscarUltimoValor'
+1541263558684	Rename method 'listarHospedeSemCheckin'

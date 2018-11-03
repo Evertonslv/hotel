@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.hotel.model.Checkin;
 import com.hotel.model.Hospede;
 import com.hotel.model.config.Conexao;
 
@@ -155,7 +156,7 @@ public class HospedeDAO {
 		return listaRetorno;
 	}
 
-	public List<Hospede> listarHospedeSemCheckin()
+	public List<Hospede> listarHospedeNoHotel()
 	{
 		String sql = "select * from hospede inner join checkin on codhos_che = codigo_hos where datsai_che is null;";
 		List<Hospede> listaRetorno = new ArrayList<Hospede>();
@@ -217,6 +218,10 @@ public class HospedeDAO {
 		}
 
 		return codigoRetorno;
+	}
+	public List<Checkin> listarCheckin(int codigoHospede) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

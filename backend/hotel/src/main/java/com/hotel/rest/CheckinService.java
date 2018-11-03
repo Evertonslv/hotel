@@ -1,5 +1,7 @@
 package com.hotel.rest;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,27 +28,47 @@ public class CheckinService {
 	}
 	
 	@GET
-	@Path("/todoscomcheckin")
+	@Path("/todoscomsaida")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTodosComCheckin() {
+		
+		List<Checkin> listaCheckin;		
+		listaCheckin = dao.listarTodosComCheckin();	
+		
+		if(listaCheckin.size() == 0)
+			return "Não existe checkin com saída";
+				
 		Gson g = new Gson();
-		return g.toJson(dao.listarTodosComCheckin());
+		return g.toJson(listaCheckin);
 	}
 	
 	@GET
-	@Path("/todossemcheckin")
+	@Path("/todossemsaida")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTodosSemCheckin() {
-		Gson g = new Gson();
-		return g.toJson(dao.listarTodosSemCheckin());
+		
+		List<Checkin> listaCheckin;
+		listaCheckin = dao.listarTodosSemCheckin();
+		
+		if(listaCheckin.size() == 0)
+			return "Não existe checkin sem saída";
+		
+		Gson g = new Gson();		
+		return g.toJson(listaCheckin);
 	}
 	
 	@GET
 	@Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getCheckin(@PathParam("id") int codigoCheckin) {
+		
+		Checkin checkin = dao.buscar(codigoCheckin);
+		
+		if(checkin == null)
+			return "Não existe checkin com esse código";
+		
 		Gson g = new Gson();
-		return g.toJson(dao.buscar(codigoCheckin));
+		return g.toJson(checkin);
 	}
 	
 	@POST

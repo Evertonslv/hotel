@@ -1,0 +1,142 @@
+package com.hotel.rest;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.google.gson.Gson;
+import com.hotel.model.Checkin;
+import com.hotel.model.dao.CheckinDAO;
+
+@Path("/checkin")
+public class CheckinService {
+	
+	private CheckinDAO dao;
+	
+	@PostConstruct
+	private void init() {
+		dao = new CheckinDAO();
+	}
+	
+	@GET
+	@Path("/hospede")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCheckinHospede() {
+		
+		List<Checkin> listaCheckin;		
+		listaCheckin = dao.listarTodosComCheckin();	
+		
+		if(listaCheckin.size() == 0)
+			return "Não existe checkin com saída";
+				
+		Gson g = new Gson();
+		return g.toJson(listaCheckin);
+	}
+	
+	@GET
+	@Path("/todoscomsaida")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTodosComCheckin() {
+		
+		List<Checkin> listaCheckin;		
+		listaCheckin = dao.listarTodosComCheckin();	
+		
+		if(listaCheckin.size() == 0)
+			return "Não existe checkin com saída";
+				
+		Gson g = new Gson();
+		return g.toJson(listaCheckin);
+	}
+	
+	@GET
+	@Path("/todossemsaida")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTodosSemCheckin() {
+		
+		List<Checkin> listaCheckin;
+		listaCheckin = dao.listarTodosSemCheckin();
+		
+		if(listaCheckin.size() == 0)
+			return "Não existe checkin sem saída";
+		
+		Gson g = new Gson();		
+		return g.toJson(listaCheckin);
+	}
+	
+	@GET
+	@Path("/get/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCheckin(@PathParam("id") int codigoCheckin) {
+		
+		Checkin checkin = dao.buscar(codigoCheckin);
+		
+		if(checkin == null)
+			return "Não existe checkin com esse código";
+		
+		Gson g = new Gson();
+		return g.toJson(checkin);
+	}
+	
+	@POST
+	@Path("/add")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insereCheckin(Checkin checkin) {
+		
+		String msg = "";
+
+		if(dao.inserir(checkin))
+			msg = "Checkin adicionado com sucesso!";
+		else
+			msg = "Erro ao adicionar checkin!";		
+
+		return msg;
+	}
+
+	@PUT
+	@Path("/edit/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String alteraCheckin(Checkin checkin, @PathParam("id") int codigoCheckin) {
+
+		String msg = "";
+		
+		if(checkin.getCodigo() == 0)
+			checkin.setCodigo(codigoCheckin);
+
+		if(dao.atualizar(checkin))
+			msg = "Checkin atualizado com sucesso!";
+		else
+			msg = "Erro ao atualizar checkin!";
+
+
+		return msg;
+	}
+
+	@DELETE
+	@Path("/delete/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deletaCheckin(@PathParam("id") int codigoCheckin) {
+
+		String msg = "";
+
+		if(dao.remover(codigoCheckin))
+			msg = "Checkin removido com sucesso!";
+		else
+			msg = "Erro ao remover checkin!";
+
+		return msg;
+	}
+
+
+}

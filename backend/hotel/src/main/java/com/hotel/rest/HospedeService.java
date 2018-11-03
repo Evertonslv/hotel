@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.hotel.model.Checkin;
 import com.hotel.model.Hospede;
 import com.hotel.model.dao.HospedeDAO;
 
@@ -36,26 +37,53 @@ public class HospedeService {
 		List<Hospede> lista;
 		lista = dao.listarTodos();
 
+		if(lista.size() == 0)
+			return "Não existe hospede cadastrado!";
+		
 		Gson g = new Gson();
 		return g.toJson(lista);
+	}
+	
+	@GET
+	@Path("/checkin/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCheckin(@PathParam("id") int codigoHospede) {
+		
+		List<Checkin> listaCheckin;		
+		listaCheckin = dao.listarCheckin(codigoHospede);	
+		
+		if(listaCheckin.size() == 0)
+			return "Não existe checkin para esse hospede!";
+				
+		Gson g = new Gson();
+		return g.toJson(listaCheckin);
 	}
 
 	@GET
 	@Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getHospede(@PathParam("id") int codigoHospede) {
+		
+		Hospede hospede = dao.buscar(codigoHospede);
+		
+		if(hospede == null)
+			return "Não existe hospede com esse código!";
+		
 		Gson g = new Gson();
-		return g.toJson(dao.buscar(codigoHospede));
+		return g.toJson(hospede);
 	}
 
 	@GET
-	@Path("/hospedesemchekin")
+	@Path("/hospedenohotel")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getHospedeSemChekin() {
 		
 		List<Hospede> lista;
-		lista = dao.listarHospedeSemCheckin();
+		lista = dao.listarHospedeNoHotel();
 
+		if(lista.size() == 0)
+			return "Não existe hospede no hotel!";
+		
 		Gson g = new Gson();
 		return g.toJson(lista);
 	}
@@ -66,8 +94,10 @@ public class HospedeService {
 	public String getHospedeComChekin() {
 		
 		List<Hospede> lista;
-
 		lista = dao.listarHospedeComCheckin();
+		
+		if(lista.size() == 0)
+			return "Não existe hospede com checkin!";
 
 		Gson g = new Gson();
 		return g.toJson(lista);
@@ -104,7 +134,6 @@ public class HospedeService {
 		else
 			msg = "Erro ao atualizar hospede!";
 
-
 		return msg;
 	}
 
@@ -120,7 +149,6 @@ public class HospedeService {
 			msg = "Hospede removido com sucesso!";
 		else
 			msg = "Erro ao remover hospede!";
-
 
 		return msg;
 	}

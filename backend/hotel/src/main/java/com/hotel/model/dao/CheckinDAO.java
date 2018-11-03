@@ -16,7 +16,7 @@ public class CheckinDAO {
 
 	public boolean inserir(Checkin checkin)
 	{
-		String sql = "INSERT INTO checkin(datent_che,datsai_che,veicul_che,codhos_che) VALUES(?,?,?,?)";
+		String sql = "INSERT INTO checkin(datent_che,datsai_che,veicul_che,codhos_che,valor_che) VALUES(?,?,?,?,?)";
 		Boolean retorno = false;
 		PreparedStatement pst = Conexao.getPreparedStatement(sql);
 
@@ -32,7 +32,9 @@ public class CheckinDAO {
 				}
 			} else {
 				pst.setInt(4, checkin.getCodigoHospede());			
-			}			
+			}
+			
+			pst.setDouble(5, checkin.getValor());
 
 			if(pst.executeUpdate()>0)
 			{
@@ -49,15 +51,14 @@ public class CheckinDAO {
 
 	public boolean atualizar(Checkin checkin)
 	{
-		String sql = "UPDATE checkin set datent_che=?,datsai_che=?,veicul_che=? where codigo_che=?";
+		String sql = "UPDATE checkin set datsai_che=?,veicul_che=?,valor_che=? where codigo_che=?";
 		Boolean retorno = false;
 		PreparedStatement pst = Conexao.getPreparedStatement(sql);
 
 		try {
-
-			pst.setTimestamp(1, checkin.getDataEntrada());
-			pst.setTimestamp(2, checkin.getDataSaida());
-			pst.setInt(3, (checkin.isVeiculo() ? 1 : 0));
+			pst.setTimestamp(1, checkin.getDataSaida());
+			pst.setInt(2, (checkin.isVeiculo() ? 1 : 0));
+			pst.setDouble(3, checkin.getValor());
 			pst.setInt(4, checkin.getCodigo());
 
 			if(pst.executeUpdate()>0)
@@ -113,6 +114,10 @@ public class CheckinDAO {
 				checkin.setVeiculo(res.getString("veicul_che").equals("1"));	
 				checkin.setDataEntrada(res.getTimestamp("datent_che"));
 				checkin.setDataSaida(res.getTimestamp("datsai_che"));
+
+				HospedeDAO dao = new HospedeDAO();
+				checkin.setHospede(dao.buscar(res.getInt("codhos_che")));
+				
 				checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
 				checkin.setValor();
 			}
@@ -127,7 +132,7 @@ public class CheckinDAO {
 	
 	public double buscaValorUltimoCheckin(Hospede hospede)
 	{
-		String sql = "SELECT max(codigo_che) as codigo_che, valor_che codigo_che FROM checkin where codhos_che?";
+		String sql = "SELECT valor_che FROM checkin where codigo_che = (select max(codigo_che) from checkin where datsai_che is not null and codhos_che=?);";
 		double valorRetorno = 0;
 
 		PreparedStatement pst = Conexao.getPreparedStatement(sql);
@@ -158,7 +163,7 @@ public class CheckinDAO {
 		try {           
 
 			ResultSet res = pst.executeQuery();
-			setValuesCheckin(res);
+			listaRetorno = setValuesCheckin(res);
 			
 		} catch (SQLException ex) {
 			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,7 +182,7 @@ public class CheckinDAO {
 		try {           
 
 			ResultSet res = pst.executeQuery();
-			setValuesCheckin(res);
+			listaRetorno = setValuesCheckin(res);
 
 
 		} catch (SQLException ex) {
@@ -219,6 +224,10 @@ public class CheckinDAO {
 			checkin.setVeiculo(res.getString("veicul_che").equals("1"));
 			checkin.setDataEntrada(res.getTimestamp("datent_che"));
 			checkin.setDataSaida(res.getTimestamp("datsai_che"));
+			
+			HospedeDAO dao = new HospedeDAO();
+			checkin.setHospede(dao.buscar(res.getInt("codhos_che")));
+			
 			checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
 			checkin.setValor();
 

@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import com.hotel.controler.CalculaValor;
 
 public class Checkin {
-	
+
 	private int codigo;
 	private int codigoHospede;
 	private Timestamp dataEntrada;
@@ -13,7 +13,7 @@ public class Checkin {
 	private boolean isVeiculo;
 	private double valor;
 	private double ultimoValor;
-	
+
 	public double getUltimoValor() {
 		return ultimoValor;
 	}
@@ -21,19 +21,24 @@ public class Checkin {
 		this.ultimoValor = ultimoValor;
 	}
 	private Hospede hospede;
-	
+
 	public Hospede getHospede() {
 		return hospede;
 	}
 	public void setHospede(Hospede hospede) {
 		this.hospede = hospede;
 	}
-	public double getValor() {		
+	public double getValor() {	
+		if(this.valor == 0 && this.dataSaida != null)
+			this.valor = new CalculaValor().calcular(this);
+
 		return this.valor;
-	}
-		
-	public void setValor() {
-		this.valor = new CalculaValor().calcular(this);
+	}		
+	public void setValor(double valor) {		
+		if(valor == 0 && this.dataSaida != null)
+			this.valor = new CalculaValor().calcular(this);
+		else
+			this.valor = valor;
 	}
 	public int getCodigo() {
 		return codigo;
