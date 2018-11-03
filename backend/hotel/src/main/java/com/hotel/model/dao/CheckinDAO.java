@@ -24,16 +24,12 @@ public class CheckinDAO {
 			pst.setTimestamp(1, checkin.getDataEntrada());
 			pst.setTimestamp(2, checkin.getDataSaida());
 			pst.setInt(3, (checkin.isVeiculo() ? 1 : 0));
-			
-			if(checkin.getCodigoHospede() == 0) {
-				if(checkin.getHospede() != null) {
-					HospedeDAO dao = new HospedeDAO();
-					pst.setInt(4, dao.getCodigoHospede(checkin.getHospede()));
-				}
-			} else {
-				pst.setInt(4, checkin.getCodigoHospede());			
+
+			if(checkin.getHospede() != null) {
+				HospedeDAO dao = new HospedeDAO();
+				pst.setInt(4, dao.getCodigoHospede(checkin.getHospede()));
 			}
-			
+
 			pst.setDouble(5, checkin.getValor());
 
 			if(pst.executeUpdate()>0)
@@ -117,7 +113,7 @@ public class CheckinDAO {
 
 				HospedeDAO dao = new HospedeDAO();
 				checkin.setHospede(dao.buscar(res.getInt("codhos_che")));
-				
+
 				checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
 				checkin.setValor(res.getDouble("valor_che"));
 			}
@@ -129,7 +125,7 @@ public class CheckinDAO {
 
 		return checkin;
 	}
-	
+
 	public double buscaValorUltimoCheckin(Hospede hospede)
 	{
 		String sql = "SELECT valor_che FROM checkin where codigo_che = (select max(codigo_che) from checkin where datsai_che is not null and codhos_che=?);";
@@ -164,7 +160,7 @@ public class CheckinDAO {
 
 			ResultSet res = pst.executeQuery();
 			listaRetorno = setValuesCheckin(res);
-			
+
 		} catch (SQLException ex) {
 			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -224,10 +220,10 @@ public class CheckinDAO {
 			checkin.setVeiculo(res.getString("veicul_che").equals("1"));
 			checkin.setDataEntrada(res.getTimestamp("datent_che"));
 			checkin.setDataSaida(res.getTimestamp("datsai_che"));
-			
+
 			HospedeDAO dao = new HospedeDAO();
 			checkin.setHospede(dao.buscar(res.getInt("codhos_che")));
-			
+
 			checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
 			checkin.setValor(res.getDouble("valor_che"));
 
@@ -236,6 +232,6 @@ public class CheckinDAO {
 
 		return listaRetorno;
 	}
-	
+
 
 }

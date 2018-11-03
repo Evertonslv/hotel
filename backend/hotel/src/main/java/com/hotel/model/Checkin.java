@@ -7,7 +7,6 @@ import com.hotel.controler.CalculaValor;
 public class Checkin {
 
 	private int codigo;
-	private int codigoHospede;
 	private Timestamp dataEntrada;
 	private Timestamp dataSaida;
 	private boolean isVeiculo;
@@ -45,12 +44,6 @@ public class Checkin {
 	}
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
-	}
-	public int getCodigoHospede() {
-		return codigoHospede;
-	}
-	public void setCodigoHospede(int codigoHospede) {
-		this.codigoHospede = codigoHospede;
 	}
 	public Timestamp getDataEntrada() {
 		return dataEntrada;
