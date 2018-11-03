@@ -119,7 +119,7 @@ public class CheckinDAO {
 				checkin.setHospede(dao.buscar(res.getInt("codhos_che")));
 				
 				checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
-				checkin.setValor();
+				checkin.setValor(res.getDouble("valor_che"));
 			}
 
 		} catch (SQLException ex) {
@@ -229,7 +229,7 @@ public class CheckinDAO {
 			checkin.setHospede(dao.buscar(res.getInt("codhos_che")));
 			
 			checkin.setValorUltmoCheckin(buscaValorUltimoCheckin(checkin.getHospede()));
-			checkin.setValor();
+			checkin.setValor(res.getDouble("valor_che"));
 
 			listaRetorno.add(checkin);
 		}
