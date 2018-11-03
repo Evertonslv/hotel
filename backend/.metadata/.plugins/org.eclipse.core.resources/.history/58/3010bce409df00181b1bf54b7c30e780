@@ -1,0 +1,55 @@
+package com.hotel.model;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+
+import com.hotel.controler.CalculaValor;
+
+public class Checkin {
+	
+	private int codigo;
+	private int codigoHospede;
+	private Timestamp dataEntrada;
+	private Timestamp dataSaida;
+	private boolean isVeiculo;
+	private double valor;
+	
+	public double getValor() {		
+		return this.valor;
+	}
+		
+	public void setValor() {
+		CalculaValor cal = new CalculaValor();		
+		this.valor = cal.calcular(this);
+	}
+	public int getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+	public int getCodigoHospede() {
+		return codigoHospede;
+	}
+	public void setCodigoHospede(int codigoHospede) {
+		this.codigoHospede = codigoHospede;
+	}
+	public Timestamp getDataEntrada() {
+		return dataEntrada;
+	}
+	public void setDataEntrada(Timestamp dataEntrada) {
+		this.dataEntrada = dataEntrada;
+	}
+	public Timestamp getDataSaida() {
+		return dataSaida;
+	}
+	public void setDataSaida(Timestamp dataSaida) {
+		this.dataSaida = dataSaida;
+	}
+	public boolean isVeiculo() {
+		return isVeiculo;
+	}
+	public void setVeiculo(boolean isVeiculo) {
+		this.isVeiculo = isVeiculo;
+	}	
+}

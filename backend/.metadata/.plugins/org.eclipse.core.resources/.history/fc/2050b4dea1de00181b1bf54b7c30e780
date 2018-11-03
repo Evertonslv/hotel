@@ -1,0 +1,189 @@
+package com.hotel.model.dao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.hotel.model.Checkin;
+import com.hotel.model.Hospede;
+import com.hotel.model.config.Conexao;
+
+public class HospedeDAO {
+	
+	public boolean inserir(Checkin checkin)
+	{
+		String sql = "INSERT INTO checkib(datent_che,datsai_che,veicul_che,codhos_che) VALUES(?,?,?,?)";
+		Boolean retorno = false;
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {
+			pst.setString(1, checkin.getDataEntrada());
+			pst.setString(2, checkin.getDataSaida());
+			pst.setString(3, (checkin.isVeiculo() ? "1" : "0"));
+			pst.setInt(4, checkin.getCodigoHospede());
+
+			if(pst.executeUpdate()>0)
+			{
+				retorno = true;
+			}
+
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+			retorno = false;
+		}
+
+		return retorno;
+
+	}
+	public boolean atualizar(Hospede hospede)
+	{
+		String sql = "UPDATE checkin set datent_che=?,datsai_che=?,veicul_che=? where codigo_che=?";
+		Boolean retorno = false;
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+
+		try {
+
+			pst.setString(1, checkin.getDataEntrada());
+			pst.setString(2, checkin.getDataSaida());
+			pst.setString(3, (checkin.isVeiculo() ? "1" : "0"));
+			pst.setInt(4, checkin.getCodigo());
+
+			if(pst.executeUpdate()>0)
+			{
+				retorno = true;
+			}
+
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(CheckinDAO.class.getName()).log(Level.SEVERE, null, ex);
+			retorno = false;
+		}
+
+		return retorno;
+
+	}
+	public boolean excluir(Hospede hospede)
+	{
+		String sql = "DELETE FROM checkin where codigo_che=?";
+		Boolean retorno = false;
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+
+		try {
+			pst.setInt(1, hospede.getCodigo());
+
+			if(pst.executeUpdate()>0)
+			{
+				retorno = true;
+			}            
+
+		} catch (SQLException ex) {
+			Logger.getLogger(HospedeDAO.class.getName()).log(Level.SEVERE, null, ex);
+			retorno = false;
+		}
+
+		return retorno;
+
+	}
+
+	public Hospede buscar(int codigo)
+	{
+		String sql = "SELECT * FROM hospede where codigo_hos=?";
+		Hospede hospede = null;
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {
+
+			pst.setInt(1, codigo);
+			ResultSet res = pst.executeQuery();
+
+			if(res.next())
+			{
+				hospede = new Hospede();
+				hospede.setCodigo(Integer.parseInt(res.getString("codigo_hos")));
+				hospede.setNome(res.getString("nome_hos"));
+				hospede.setDocumento(res.getString("docume_hos"));
+				hospede.setTelefone(res.getString("telefo_hos"));
+			}
+
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(HospedeDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+
+		return hospede;
+
+	}
+	
+	
+	public List<Hospede> listarHospedeComCheckin()
+	{
+		String sql = "select * from hospede inner join checkin on codhos_che = codigo_hos where datsai_che is null;";
+		List<Hospede> retorno = new ArrayList<Hospede>();
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {           
+
+			ResultSet res = pst.executeQuery();
+			while(res.next())
+			{
+				Hospede hospede = new Hospede();
+				hospede.setCodigo(Integer.parseInt(res.getString("codigo_hos")));
+				hospede.setNome(res.getString("nome_hos"));
+				hospede.setDocumento(res.getString("docume_hos"));
+				hospede.setTelefone(res.getString("telefo_hos"));
+
+				retorno.add(hospede);
+			}
+
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(HospedeDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+
+		return retorno;
+
+
+	}
+
+	public List<Hospede> listarHospedeSemCheckin()
+	{
+		String sql = "select * from hospede inner join checkin on codhos_che = codigo_hos where datsai_che is not null;";
+		List<Hospede> retorno = new ArrayList<Hospede>();
+
+		PreparedStatement pst = Conexao.getPreparedStatement(sql);
+		try {           
+
+			ResultSet res = pst.executeQuery();
+			while(res.next())
+			{
+				Hospede hospede = new Hospede();
+				hospede.setCodigo(Integer.parseInt(res.getString("codigo_hos")));
+				hospede.setNome(res.getString("nome_hos"));
+				hospede.setDocumento(res.getString("docume_hos"));
+				hospede.setTelefone(res.getString("telefo_hos"));
+
+				retorno.add(hospede);
+			}
+
+
+
+		} catch (SQLException ex) {
+			Logger.getLogger(HospedeDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+
+		return retorno;
+
+	}
+	
+}

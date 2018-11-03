@@ -1,0 +1,47 @@
+package com.hotel.rest;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.google.gson.Gson;
+import com.hotel.model.dao.CheckinDAO;
+
+public class CheckinService {
+	
+	private CheckinDAO dao;
+	
+	@PostConstruct
+	private void init() {
+		dao = new CheckinDAO();
+	}
+	
+	@GET
+	@Path("/todoscomcheckin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTodosComCheckin() {
+		Gson g = new Gson();
+		return g.toJson(dao.listarTodosComCheckin());
+	}
+	
+	@GET
+	@Path("/todossemcheckin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTodosSemCheckin() {
+		Gson g = new Gson();
+		return g.toJson(dao.listarTodosSemCheckin());
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCheckin(@PathParam("id") int codigoCheckin) {
+		Gson g = new Gson();
+		return g.toJson(dao.buscar(codigoCheckin));
+	}
+
+
+}

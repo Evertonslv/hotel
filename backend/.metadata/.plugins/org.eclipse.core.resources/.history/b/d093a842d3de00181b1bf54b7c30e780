@@ -1,0 +1,45 @@
+package com.hotel.model;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Checkin {
+	
+	private int codigo;
+	private int codigoHospede;
+	private Date dataEntrada;
+	private Date dataSaida;
+	private boolean isVeiculo;
+	
+	public int getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+	public int getCodigoHospede() {
+		return codigoHospede;
+	}
+	public void setCodigoHospede(int codigoHospede) {
+		this.codigoHospede = codigoHospede;
+	}
+	public Date getDataEntrada() {
+		return dataEntrada;
+	}
+	public void setDataEntrada(Date dataEntrada) {
+		this.dataEntrada = dataEntrada;
+	}
+	public Date getDataSaida() {
+		return dataSaida;
+	}
+	public void setDataSaida(Date dataSaida) {
+		this.dataSaida = dataSaida;
+	}
+	public boolean isVeiculo() {
+		return isVeiculo;
+	}
+	public void setVeiculo(boolean isVeiculo) {
+		this.isVeiculo = isVeiculo;
+	}	
+}

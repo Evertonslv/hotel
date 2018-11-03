@@ -1,0 +1,5 @@
+package com.hotel.model.dao;
+
+public class CheckinDAO {
+
+}

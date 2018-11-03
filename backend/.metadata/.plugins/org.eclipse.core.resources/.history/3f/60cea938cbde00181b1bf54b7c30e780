@@ -1,0 +1,5 @@
+package com.hotel.rest;
+
+public class CheckinService {
+
+}

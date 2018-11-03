@@ -1,0 +1,27 @@
+1541138609469	Rename resource 'bd'
+1541138620379	Rename resource 'bd.migration'
+1541138638206	Rename resource 'bd'
+1541139428391	Copy package
+1541139441399	Delete element
+1541139493472	Rename package 'config'
+1541139533546	Rename package 'dao'
+1541139980198	Delete element
+1541170020660	Rename method 'excluir'
+1541183266661	Rename local variable 'codigoHospede'
+1541183446850	Rename local variable 'codigoHospede'
+1541183463444	Rename local variable 'codigoHospede'
+1541187418182	Extract method 'setValuesCheckin'
+1541187655751	Rename local variable 'retorno'
+1541187668234	Rename local variable 'retorno'
+1541187683854	Rename local variable 'retorno'
+1541187692571	Rename local variable 'retorno'
+1541190230626	Delete element
+1541193882550	Rename field 'VAGAGARAGEM_SEGUNDASEXTA'
+1541195003890	Rename local variable 'calendar'
+1541212320968	Extract method 'setValuesHospede'
+1541212401578	Rename local variable 'retorno'
+1541212411524	Rename local variable 'retorno'
+1541212418091	Rename local variable 'retorno'
+1541212425137	Rename local variable 'retorno'
+1541215024352	Rename method 'setUltimoValor'
+1541215080089	Rename method 'buscarUltimoValor'

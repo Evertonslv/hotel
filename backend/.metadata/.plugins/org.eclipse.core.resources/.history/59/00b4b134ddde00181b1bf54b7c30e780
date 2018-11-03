@@ -1,0 +1,8 @@
+package com.hotel.controler;
+
+public enum Valor {
+	
+	APPLE("RED"), BANANA(“YELLOW”), GRAPES(“GREEN”);
+;
+
+APPLE(“RED”), BANANA(“YELLOW”), GRAPES(“GREEN”);}

@@ -1,0 +1,47 @@
+package com.hotel.controler;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.hotel.model.Checkin;
+
+public class CalculaValor {
+	
+	private static final double DIA_SEMANA = 120.00;
+	private static final double FINAL_SEMANA = 150.00;
+	private static final double VAGAGARAGEM_SEGUNDASEXTA = 15.00;
+	private static final double VAGAGARAGEM_FINALSEMANA = 20.00;
+
+	public double calcular(Checkin checkin) {
+		
+		Calendar dataEntrada = checkin.getDataEntrada(), dataFinal;
+		int finalSemana = 0, diaSemana = 0;
+		double valorTotal = 0;
+		
+		if(checkin.getDataSaida() != null)
+			dataFinal = checkin.getDataSaida();
+		else
+			dataFinal = Calendar.getInstance();
+		
+		while (dataFinal.after(dataEntrada)) {
+			if(dataEntrada.DAY_OF_WEEK == Calendar.SATURDAY || dataEntrada.DAY_OF_WEEK == Calendar.SUNDAY)
+				finalSemana ++;
+			else
+				diaSemana ++;
+			
+			dataEntrada.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		if(finalSemana > 0) {
+			valorTotal += (finalSemana * FINAL_SEMANA);
+		}
+		
+		if(diaSemana > 0) {
+			valorTotal += (diaSemana * DIA_SEMANA);
+		}
+		
+		return valorTotal;
+	}
+}

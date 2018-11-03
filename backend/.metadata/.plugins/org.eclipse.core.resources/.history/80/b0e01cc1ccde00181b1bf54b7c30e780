@@ -1,0 +1,33 @@
+package com.hotel.rest;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.google.gson.Gson;
+import com.hotel.model.Hospede;
+import com.hotel.model.dao.CheckinDAO;
+
+public class CheckinService {
+	
+	private CheckinDAO dao;
+	
+	@PostConstruct
+	private void init() {
+		dao = new CheckinDAO();
+	}
+	
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTodosCheckin() {
+		Gson g = new Gson();
+		return g.toJson(dao.listarTodos());
+	}
+
+
+}

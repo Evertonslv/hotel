@@ -1,0 +1,31 @@
+package com.hotel.controler;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
+
+import com.hotel.model.Checkin;
+
+public class CalculaValor {
+	
+	private static final double SEGUNDA_SEXTA = 120.00;
+	private static final double FINAL_SEMANA = 150.00;
+	private static final double VAGAGARAGEM_SEGUNDASEXTA = 15.00;
+	private static final double VAGAGARAGEM_FINALSEMANA = 20.00;
+
+	public void calcular(Checkin checkin) {
+		
+		Date dataEntrada = new Date(checkin.getDataEntrada());		
+		Date dataFinal;
+		
+		if(checkin.getDataSaida() != null)
+			dataFinal = checkin.getDataSaida();
+		else
+			dataFinal = new Date(System.currentTimeMillis());
+		
+		while (dataEntrada. <= dataFinal) {
+			type type = (type) en.nextElement();
+			
+		}
+	}
+}

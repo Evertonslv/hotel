@@ -1,0 +1,53 @@
+-- SCHEMA: hotel
+
+-- DROP SCHEMA hotel ;
+
+CREATE SCHEMA hotel
+    AUTHORIZATION postgres;
+    
+
+-- Table: hotel.checkin
+
+-- DROP TABLE hotel.checkin;
+
+CREATE TABLE hotel.checkin
+(
+    codigo_che integer NOT NULL,
+    datent_che timestamp with time zone,
+    datsai_che timestamp with time zone,
+    veicul_che integer,
+    codhos_che integer NOT NULL,
+    CONSTRAINT checkin_pkey PRIMARY KEY (codigo_che),
+    CONSTRAINT codhos_che FOREIGN KEY (codhos_che)
+        REFERENCES hotel.hospede (codigo_hos) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE hotel.checkin
+    OWNER to postgres;
+    
+    
+-- Table: hotel.hospede
+
+-- DROP TABLE hotel.hospede;
+
+CREATE TABLE hotel.hospede
+(
+    codigo_hos integer NOT NULL,
+    nome_hos text COLLATE pg_catalog."default" NOT NULL,
+    docume_hos text COLLATE pg_catalog."default" NOT NULL,
+    telefo_hos text COLLATE pg_catalog."default",
+    CONSTRAINT hospede_pkey PRIMARY KEY (codigo_hos)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE hotel.hospede
+    OWNER to postgres;

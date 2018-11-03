@@ -1,0 +1,72 @@
+package com.hotel.rest;
+
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.google.gson.Gson;
+import com.hotel.model.Hospede;
+import com.hotel.model.dao.HospedeDAO;
+
+@Path("/hospede")
+public class HospedeService {
+
+	@GET
+	@Path("/hospedesemchekin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getHospedeSemChekin() {
+		List<Hospede> lista;
+
+		HospedeDAO dao = new HospedeDAO();
+		lista = dao.listarHospedeSemCheckin();
+
+		Gson g = new Gson();
+		return g.toJson(lista);
+	}
+
+	@GET
+	@Path("/hospedecomchekin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getHospedeComChekin() {
+		List<Hospede> lista;
+
+		HospedeDAO dao = new HospedeDAO();
+		lista = dao.listarHospedeComCheckin();
+
+		Gson g = new Gson();
+		return g.toJson(lista);
+	}
+
+	@GET
+	@Path("/hospedecomchekin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String insereHospede() {
+		return "Hospede inserido!";
+	}
+
+	@GET
+	@Path("/hospedecomchekin")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deletaHospede(@PathParam("id") int codigoHospede) {
+
+		String msg = "";
+
+		try {
+			HospedeDAO dao = new HospedeDAO();
+			dao.remover(codigoHospede);
+			msg = "Hospede removido com sucesso!";
+		} catch (Exception e) {
+			msg = "Erro ao remover hospede!";
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
+	
+}

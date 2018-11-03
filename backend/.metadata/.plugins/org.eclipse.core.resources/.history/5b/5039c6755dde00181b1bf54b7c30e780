@@ -1,0 +1,8 @@
+package com.hotel.rest;
+
+import javax.ws.rs.Path;
+
+@Path("/hospede")
+public class HospedeService {
+
+}

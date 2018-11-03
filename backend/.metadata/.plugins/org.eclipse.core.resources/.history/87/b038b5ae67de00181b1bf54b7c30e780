@@ -1,0 +1,5 @@
+package com.hotel.model.config;
+
+public class Conexao {
+
+}
