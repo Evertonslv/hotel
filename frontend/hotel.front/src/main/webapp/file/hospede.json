@@ -1,0 +1,72 @@
+[
+	{
+		"nome": "Guilherme",
+		"dataEntrada": "20180101T110000",
+		"dataSaida": "20180102T110000",
+		"documento": "999",
+		"valor": "10.00"
+	},
+	{
+		"nome": "Maria",
+		"dataEntrada": "20180104T110000",
+		"dataSaida": "20180107T110000",
+		"documento": "999",
+		"valor": "77.77"
+	},
+	{
+		"nome": "Marcos",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": "20180114T170000",
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Moiseis",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": "20180114T170000",
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Marta",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": "20180114T170000",
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Mario",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": "20180114T170000",
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Marcio",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": null,
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Luis",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": null,
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Gil",
+		"dataEntrada": "20180110T110000",
+		"dataSaida": "20180114T170000",
+		"documento": "999",
+		"valor": "23.50"
+	},
+	{
+		"nome": "Guilherme",
+		"dataEntrada": "20180101T110000",
+		"dataSaida": "20180102T110000",
+		"documento": "999",
+		"valor": "10.00"
+	}
+]
