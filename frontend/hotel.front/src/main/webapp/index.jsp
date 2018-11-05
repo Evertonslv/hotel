@@ -27,12 +27,12 @@
 			<div class="card">
 
 				<div class="form-group col-sm-6 col-lg-6 group">
-					<label>Data/hora de entrada</label> <input type="data" id="dataentrada" name="data-entrada"
+					<label>Data/hora de entrada</label> <input type="datetime-local" id="dataentrada" name="data-entrada"
 						class="form-control">
 				</div>
 
 				<div class="form-group col-sm-6 col-lg-6 group">
-					<label>Data/hora de saída</label> <input type="data" id="datasaida" name="data-saida"
+					<label>Data/hora de saída</label> <input type="datetime-local" id="datasaida" name="data-saida"
 						class="form-control">
 				</div>
 
@@ -109,7 +109,6 @@
 	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
-	<script src="scripts/FileSaver.min.js"></script>
 	<script src="scripts/acao.js"></script>
 </body>
 </html>
